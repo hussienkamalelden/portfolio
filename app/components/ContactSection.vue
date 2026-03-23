@@ -124,9 +124,9 @@ import emailjs from '@emailjs/browser'
 // 3. Create an Email Template → copy the Template ID
 //    (use {{from_name}}, {{from_email}}, {{message}} as template variables)
 // 4. Copy your Public Key from Account → API Keys
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'
+const EMAILJS_SERVICE_ID = 'service_jyquran'
+const EMAILJS_TEMPLATE_ID = 'template_xtiwsvr'
+const EMAILJS_PUBLIC_KEY = 'LIwbDuQnSUpCDC9tq'
 
 const formRef = ref<HTMLFormElement | null>(null)
 
