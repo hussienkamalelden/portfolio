@@ -13,14 +13,25 @@
           Devora<span class="text-accent-600">.</span>
         </a>
 
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-1">
           <a
             v-for="item in navItems"
             :key="item.href"
             :href="item.href"
-            class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+            :class="[
+              'relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300',
+              activeSection === item.href.slice(1)
+                ? 'text-accent-600 dark:text-accent-400'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-gray-800/40',
+            ]"
           >
             {{ item.label }}
+            <span
+              :class="[
+                'absolute bottom-0.5 left-1/2 -translate-x-1/2 h-[2px] rounded-full bg-accent-500 transition-all duration-300',
+                activeSection === item.href.slice(1) ? 'w-4 opacity-100' : 'w-0 opacity-0',
+              ]"
+            />
           </a>
         </div>
 
@@ -73,7 +84,12 @@
             v-for="item in navItems"
             :key="item.href"
             :href="item.href"
-            class="block py-3 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+            :class="[
+              'block py-3 text-sm font-medium transition-colors',
+              activeSection === item.href.slice(1)
+                ? 'text-accent-600 dark:text-accent-400'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white',
+            ]"
             @click="menuOpen = false"
           >
             {{ item.label }}
@@ -89,6 +105,7 @@ const { isDark, toggle } = useDarkMode()
 
 const menuOpen = ref(false)
 const scrolled = ref(false)
+const activeSection = ref('hero')
 
 const navItems = [
   { label: 'Home', href: '#hero' },
@@ -97,9 +114,35 @@ const navItems = [
   { label: 'Contact', href: '#contact' },
 ]
 
+const sectionIds = navItems.map(item => item.href.slice(1))
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll()
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => {
+          const ai = sectionIds.indexOf(a.target.id)
+          const bi = sectionIds.indexOf(b.target.id)
+          return ai - bi
+        })
+
+      if (visible.length > 0) {
+        activeSection.value = visible[0]!.target.id
+      }
+    },
+    { threshold: 0.15, rootMargin: '-80px 0px -35% 0px' },
+  )
+
+  for (const id of sectionIds) {
+    const el = document.getElementById(id)
+    if (el) observer.observe(el)
+  }
+
+  onBeforeUnmount(() => observer.disconnect())
 })
 
 onUnmounted(() => {
