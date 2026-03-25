@@ -14,10 +14,6 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
   },
 
-  routeRules: {
-    '/': { prerender: true },
-  },
-
   app: {
     head: {
       script: [
