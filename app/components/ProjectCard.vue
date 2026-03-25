@@ -3,12 +3,12 @@
     class="group relative rounded-2xl overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-gray-900/50 transition-all duration-500 hover:-translate-y-1"
   >
     <div
-      class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-gray-800"
+      class="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-gray-800 p-2"
     >
       <img
         :src="project.image"
         :alt="project.title"
-        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        class="w-full h-full object-cover object-top rounded-xl border border-gray-200 dark:border-gray-700 transition-transform duration-700 group-hover:scale-110"
         loading="lazy"
       />
       <div
