@@ -34,9 +34,7 @@
           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-medium hover:bg-white transition-colors"
         >
           View Project
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
-          </svg>
+          <Icon name="lucide:arrow-up-right" class="w-3.5 h-3.5" />
         </a>
       </div>
     </div>
