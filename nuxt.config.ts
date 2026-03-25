@@ -11,6 +11,9 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'netlify-static',
+    externals: {
+      inline: ['vue', 'vue-router'],
+    },
   },
 
   app: {
