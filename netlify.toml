@@ -1,6 +1,7 @@
 [build]
-  command = "pnpm run build"
+  command = "pnpm install --shamefully-hoist && pnpm run build"
   publish = ".output/public"
 
 [build.environment]
+  NODE_VERSION = "20"
   NITRO_PRESET = "netlify"
