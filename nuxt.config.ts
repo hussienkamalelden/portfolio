@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   nitro: {
-    preset: 'netlify',
+    preset: 'vercel',
   },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
