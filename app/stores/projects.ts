@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia'
 
+export interface ProjectLink {
+  label: string
+  url: string
+}
+
 export interface Project {
   id: number
   title: string
@@ -7,7 +12,8 @@ export interface Project {
   image: string
   techStack: string[]
   link?: string
-  category: 'websites' | 'mobileApps'
+  links?: ProjectLink[]
+  category?: 'websites' | 'mobileApps'
 }
 
 export const useProjectsStore = defineStore('projects', () => {
@@ -110,6 +116,131 @@ export const useProjectsStore = defineStore('projects', () => {
       image: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=800&h=500&fit=crop',
       techStack: ['Flutter', 'Riverpod', 'Hive', 'Lottie'],
       link: '#',
+    },
+    {
+      id: 13,
+      title: 'Acceptix',
+      description: 'Mobile app available on Android, iOS, and Huawei AppGallery.',
+      image: 'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=800&h=500&fit=crop',
+      techStack: ['Android', 'iOS', 'Huawei'],
+      link: 'https://play.google.com/store/apps/details?id=com.global.student_center',
+      links: [
+        {
+          label: 'Android',
+          url: 'https://play.google.com/store/apps/details?id=com.global.student_center',
+        },
+        {
+          label: 'iOS',
+          url: 'https://apps.apple.com/eg/app/acceptix/id6477440013',
+        },
+        {
+          label: 'Huawei',
+          url: 'https://appgallery.huawei.com/#/app/C110672891',
+        },
+      ],
+      category: 'mobileApps',
+    },
+    {
+      id: 14,
+      title: 'Bling',
+      description: 'Mobile app available on Huawei AppGallery.',
+      image: 'https://images.unsplash.com/photo-1563986768609-322da13575f2?w=800&h=500&fit=crop',
+      techStack: ['Huawei'],
+      link: 'https://appgallery.huawei.com/#/app/C110144743',
+      links: [
+        {
+          label: 'Huawei',
+          url: 'https://appgallery.huawei.com/#/app/C110144743',
+        },
+      ],
+      category: 'mobileApps',
+    },
+    {
+      id: 15,
+      title: 'Boutique Store',
+      description: 'Mobile app available on Android and iOS.',
+      image: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=800&h=500&fit=crop',
+      techStack: ['Android', 'iOS'],
+      link: 'https://play.google.com/store/apps/details?id=com.boutique.user.yearex.boutique_user',
+      links: [
+        {
+          label: 'Android',
+          url: 'https://play.google.com/store/apps/details?id=com.boutique.user.yearex.boutique_user',
+        },
+        {
+          label: 'iOS',
+          url: 'https://apps.apple.com/eg/app/boutique-online-store/id6461419630',
+        },
+      ],
+      category: 'mobileApps',
+    },
+    {
+      id: 16,
+      title: 'Boutique Seller',
+      description: 'Mobile app available on Android and iOS.',
+      image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&h=500&fit=crop',
+      techStack: ['Android', 'iOS'],
+      link: 'https://play.google.com/store/apps/details?id=com.boutique.seller.yearex.boutique_seller_center',
+      links: [
+        {
+          label: 'Android',
+          url: 'https://play.google.com/store/apps/details?id=com.boutique.seller.yearex.boutique_seller_center',
+        },
+        {
+          label: 'iOS',
+          url: 'https://apps.apple.com/eg/app/boutique-seller-center/id6449961732',
+        },
+      ],
+      category: 'mobileApps',
+    },
+    {
+      id: 17,
+      title: 'Thikruk (Islamic App)',
+      description: 'Islamic app available on Android.',
+      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop',
+      techStack: ['Android'],
+      link: 'https://play.google.com/store/apps/details?id=com.fhdh.zikruk',
+      links: [
+        {
+          label: 'Android',
+          url: 'https://play.google.com/store/apps/details?id=com.fhdh.zikruk',
+        },
+      ],
+      category: 'mobileApps',
+    },
+    {
+      id: 18,
+      title: 'Clinic Management System',
+      description: 'Clinic management app available on Android.',
+      image: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=800&h=500&fit=crop',
+      techStack: ['Android'],
+      link: 'https://play.google.com/store/apps/details?id=com.fhdh.clinic',
+      links: [
+        {
+          label: 'Android',
+          url: 'https://play.google.com/store/apps/details?id=com.fhdh.clinic',
+        },
+      ],
+      category: 'mobileApps',
+    },
+    {
+      id: 19,
+      title: 'ScoutX Pro',
+      description: 'ScoutX Pro app available on Android and iOS.',
+      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&h=500&fit=crop',
+      techStack: ['Android', 'iOS'],
+      link: 'https://play.google.com/store/apps/details?id=com.scoutx.scoutxpro&hl=en',
+      links: [
+        {
+          label: 'Android',
+          url: 'https://play.google.com/store/apps/details?id=com.scoutx.scoutxpro&hl=en',
+        },
+        {
+          label: 'iOS',
+          url: 'https://apps.apple.com/eg/app/scoutx-pro/id6503641256',
+        },
+      ],
+      category: 'mobileApps',
     },
   ]
 
