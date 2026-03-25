@@ -2,281 +2,273 @@
   <div class="absolute inset-0">
     <canvas
       ref="canvasEl"
-      class="w-full h-full opacity-80 dark:opacity-70"
+      class="w-full h-full"
       aria-hidden="true"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-white/20 via-white/0 to-white/60 dark:from-gray-950/20 dark:via-gray-950/0 dark:to-gray-950/60" />
+    <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/80 dark:from-gray-950/30 dark:via-transparent dark:to-gray-950/80" />
   </div>
 </template>
 
 <script setup lang="ts">
-import * as d3 from 'd3'
-
-type Node = {
-  id: number
+interface Particle {
   x: number
   y: number
-  vx?: number
-  vy?: number
-  r: number
+  speed: number
+  size: number
   depth: number
+  hue: number
+  life: number
+  maxLife: number
+  opacity: number
 }
-
-type SimNode = d3.SimulationNodeDatum & Node
-type SimLink = d3.SimulationLinkDatum<SimNode> & { strength: number }
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 
-const prefersReducedMotion = computed(() => {
-  if (import.meta.server)
-    return true
-  return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false
-})
+function clamp(v: number, lo: number, hi: number) {
+  return v < lo ? lo : v > hi ? hi : v
+}
 
-function clamp(v: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, v))
+function createNoise() {
+  const perm = new Uint8Array(512)
+  const grad: [number, number][] = [
+    [1, 1], [-1, 1], [1, -1], [-1, -1],
+    [1, 0], [-1, 0], [0, 1], [0, -1],
+  ]
+
+  for (let i = 0; i < 256; i++) perm[i] = i
+  let seed = 42
+  for (let i = 255; i > 0; i--) {
+    seed = (seed * 16807 + 0) % 2147483647
+    const j = seed % (i + 1)
+    const tmp = perm[i]!
+    perm[i] = perm[j]!
+    perm[j] = tmp
+  }
+  for (let i = 0; i < 256; i++) perm[i + 256] = perm[i]!
+
+  function dot(gi: number, x: number, y: number) {
+    const g = grad[gi % 8]!
+    return g[0] * x + g[1] * y
+  }
+
+  function fade(t: number) {
+    return t * t * t * (t * (t * 6 - 15) + 10)
+  }
+
+  function lerp(a: number, b: number, t: number) {
+    return a + t * (b - a)
+  }
+
+  return function noise2d(x: number, y: number): number {
+    const xi = Math.floor(x) & 255
+    const yi = Math.floor(y) & 255
+    const xf = x - Math.floor(x)
+    const yf = y - Math.floor(y)
+    const u = fade(xf)
+    const v = fade(yf)
+    const aa = perm[perm[xi]! + yi]!
+    const ab = perm[perm[xi]! + yi + 1]!
+    const ba = perm[perm[xi + 1]! + yi]!
+    const bb = perm[perm[xi + 1]! + yi + 1]!
+    return lerp(
+      lerp(dot(aa, xf, yf), dot(ba, xf - 1, yf), u),
+      lerp(dot(ab, xf, yf - 1), dot(bb, xf - 1, yf - 1), u),
+      v,
+    )
+  }
 }
 
 onMounted(() => {
-  if (!canvasEl.value)
-    return
-
+  if (!canvasEl.value) return
   const canvas = canvasEl.value
-  const ctx = canvas.getContext('2d')
-  if (!ctx)
-    return
-  const context = ctx
+  const c = canvas.getContext('2d')!
+  if (!c) return
 
-  const ro = new ResizeObserver(() => resize())
-  ro.observe(canvas)
-
+  const noise = createNoise()
   let raf = 0
   let stop = false
-  let sim: d3.Simulation<SimNode, SimLink> | null = null
-  let lastT = performance.now()
+  let w = 0
+  let h = 0
+  let dpr = 1
+  let time = 0
+  let particles: Particle[] = []
 
-  const state = {
-    w: 0,
-    h: 0,
-    dpr: 1,
-    nodes: [] as SimNode[],
-    links: [] as SimLink[],
-    pointer: { x: 0, y: 0, active: 0 },
-    colors: {
-      node: 'rgba(42, 140, 255, 0.95)',
-      link: 'rgba(42, 140, 255, 0.28)',
-      glow: 'rgba(42, 140, 255, 0.18)',
-    },
+  const pointer = { x: -9999, y: -9999, active: false, targetX: -9999, targetY: -9999 }
+  const NOISE_SCALE = 0.0012
+  const NOISE_SPEED = 0.00028
+  const TRAIL_ALPHA = 0.06
+  const BASE_SPEED = 0.55
+  const POINTER_RADIUS = 200
+  const POINTER_FORCE = 2.8
+
+  const COLOR_RANGES: { h: number, s: number, l: number }[] = [
+    { h: 210, s: 95, l: 62 },
+    { h: 195, s: 90, l: 58 },
+    { h: 230, s: 80, l: 65 },
+    { h: 180, s: 85, l: 55 },
+  ]
+
+  function createParticle(rand?: () => number): Particle {
+    const r = rand || Math.random
+    const depth = 0.2 + r() * 0.8
+    const colorDef = COLOR_RANGES[Math.floor(r() * COLOR_RANGES.length) % COLOR_RANGES.length]!
+    const hue = colorDef.h + (r() - 0.5) * 20
+    const maxLife = 280 + r() * 420
+    return {
+      x: r() * w,
+      y: r() * h,
+      speed: (BASE_SPEED + r() * 0.6) * depth,
+      size: (1.2 + depth * 2.8) * (0.7 + r() * 0.6),
+      depth,
+      hue,
+      life: r() * maxLife,
+      maxLife,
+      opacity: 0,
+    }
   }
 
-  function seededRandom(seed: number) {
-    // mulberry32
-    return () => {
-      seed |= 0
-      seed = seed + 0x6D2B79F5 | 0
-      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
-      t = t + Math.imul(t ^ (t >>> 7), 61 | t) ^ t
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  function initParticles() {
+    const count = clamp(Math.round((w * h) / 14000), 60, 220)
+    let s = 1337
+    const rand = () => {
+      s = (s * 16807 + 0) % 2147483647
+      return (s - 1) / 2147483646
     }
+    particles = Array.from({ length: count }, () => createParticle(rand))
   }
 
   function resize() {
     const rect = canvas.getBoundingClientRect()
-    const w = Math.max(1, Math.round(rect.width))
-    const h = Math.max(1, Math.round(rect.height))
-    const dpr = clamp(window.devicePixelRatio || 1, 1, 2)
-
-    state.w = w
-    state.h = h
-    state.dpr = dpr
+    w = Math.max(1, Math.round(rect.width))
+    h = Math.max(1, Math.round(rect.height))
+    dpr = clamp(window.devicePixelRatio || 1, 1, 2)
     canvas.width = Math.round(w * dpr)
     canvas.height = Math.round(h * dpr)
-
-    if (prefersReducedMotion.value) {
-      initSimulation({ animate: false })
-      drawFrame(0)
-      return
-    }
-
-    initSimulation({ animate: true })
+    initParticles()
   }
 
-  function initSimulation(opts: { animate: boolean }) {
-    const w = state.w
-    const h = state.h
-    const area = w * h
-    const count = clamp(Math.round(area / 22000), 26, 64)
-    const rand = seededRandom(1337)
+  function drawFrame() {
+    c.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-    state.nodes = Array.from({ length: count }).map((_, i) => {
-      const depth = rand()
-      const r = 1.8 + depth * 2.6
-      return {
-        id: i,
-        x: rand() * w,
-        y: rand() * h,
-        r,
-        depth,
-      } satisfies SimNode
-    })
+    const isDark = document.documentElement.classList.contains('dark')
+    c.fillStyle = isDark
+      ? `rgba(3, 7, 18, ${TRAIL_ALPHA})`
+      : `rgba(255, 255, 255, ${TRAIL_ALPHA})`
+    c.fillRect(0, 0, w, h)
 
-    const links: SimLink[] = []
-    const maxDist = Math.min(w, h) * 0.28
-    for (let i = 0; i < count; i++) {
-      for (let j = i + 1; j < count; j++) {
-        const a = state.nodes[i]
-        const b = state.nodes[j]
-        const dx = a.x - b.x
-        const dy = a.y - b.y
-        const d = Math.hypot(dx, dy)
-        if (d < maxDist && rand() < 0.14) {
-          const strength = clamp(1 - d / maxDist, 0.15, 0.85)
-          links.push({
-            source: a,
-            target: b,
-            strength,
-          } as SimLink)
+    if (pointer.active) {
+      pointer.x += (pointer.targetX - pointer.x) * 0.08
+      pointer.y += (pointer.targetY - pointer.y) * 0.08
+    }
+
+    if (pointer.active) {
+      const pg = c.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, POINTER_RADIUS * 1.4)
+      pg.addColorStop(0, isDark ? 'rgba(42, 140, 255, 0.06)' : 'rgba(42, 140, 255, 0.04)')
+      pg.addColorStop(1, 'transparent')
+      c.fillStyle = pg
+      c.fillRect(0, 0, w, h)
+    }
+
+    time += NOISE_SPEED
+    c.globalCompositeOperation = 'lighter'
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i]!
+      p.life++
+
+      const lifeRatio = p.life / p.maxLife
+      if (lifeRatio >= 1) {
+        particles[i] = createParticle()
+        particles[i]!.life = 0
+        continue
+      }
+      const fadeIn = Math.min(lifeRatio * 6, 1)
+      const fadeOut = Math.min((1 - lifeRatio) * 4, 1)
+      p.opacity = fadeIn * fadeOut * p.depth
+
+      const nx = p.x * NOISE_SCALE
+      const ny = p.y * NOISE_SCALE
+      let angle = noise(nx, ny + time) * Math.PI * 2.4
+      angle += noise(nx * 2.1, ny * 2.1 + time * 1.5) * Math.PI * 0.6
+
+      let vx = Math.cos(angle) * p.speed
+      let vy = Math.sin(angle) * p.speed
+
+      if (pointer.active) {
+        const dx = pointer.x - p.x
+        const dy = pointer.y - p.y
+        const dist = Math.hypot(dx, dy)
+        if (dist < POINTER_RADIUS && dist > 0.1) {
+          const strength = (1 - dist / POINTER_RADIUS) ** 2 * POINTER_FORCE * p.depth
+          vx += (-dy / dist * strength * 0.7) + (dx / dist * strength * 0.3)
+          vy += (dx / dist * strength * 0.7) + (dy / dist * strength * 0.3)
+          p.opacity = clamp(p.opacity + strength * 0.12, 0, 1)
         }
       }
-    }
-    state.links = links
 
-    sim?.stop()
-    sim = d3.forceSimulation<SimNode>(state.nodes)
-      .alpha(1)
-      .alphaDecay(opts.animate ? 0.02 : 0.12)
-      .velocityDecay(0.22)
-      .force('charge', d3.forceManyBody<SimNode>().strength((d: SimNode) => -18 - d.depth * 22))
-      .force('center', d3.forceCenter(w / 2, h / 2))
-      .force('collision', d3.forceCollide<SimNode>().radius((d: SimNode) => d.r * 2.2).strength(0.55))
-      .force('link', d3.forceLink<SimNode, SimLink>(state.links)
-        .distance(() => 46)
-        .strength((l: SimLink) => l.strength * 0.55))
+      p.x += vx
+      p.y += vy
 
-    if (!opts.animate)
-      sim.tick(80)
-  }
+      if (p.x < -20) p.x = w + 20
+      if (p.x > w + 20) p.x = -20
+      if (p.y < -20) p.y = h + 20
+      if (p.y > h + 20) p.y = -20
 
-  function drawFrame(dt: number) {
-    const w = state.w
-    const h = state.h
-    const dpr = state.dpr
+      if (p.opacity < 0.02) continue
 
-    context.setTransform(dpr, 0, 0, dpr, 0, 0)
-    context.clearRect(0, 0, w, h)
+      const sat = 85 + p.depth * 10
+      const light = isDark ? 55 + p.depth * 15 : 48 + p.depth * 12
 
-    // soft vignette + glow
-    const g = context.createRadialGradient(w * 0.55, h * 0.35, 10, w * 0.55, h * 0.35, Math.max(w, h) * 0.7)
-    g.addColorStop(0, state.colors.glow)
-    g.addColorStop(1, 'rgba(42, 140, 255, 0)')
-    context.fillStyle = g
-    context.fillRect(0, 0, w, h)
+      const glowR = p.size * (2.5 + p.depth * 1.5)
+      const grd = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR)
+      grd.addColorStop(0, `hsla(${p.hue}, ${sat}%, ${light}%, ${p.opacity * 0.35})`)
+      grd.addColorStop(1, `hsla(${p.hue}, ${sat}%, ${light}%, 0)`)
+      c.fillStyle = grd
+      c.fillRect(p.x - glowR, p.y - glowR, glowR * 2, glowR * 2)
 
-    const pointer = state.pointer
-    const px = pointer.x
-    const py = pointer.y
-    const pulse = 0.5 + 0.5 * Math.sin((performance.now() / 900) + dt * 0.001)
-
-    // links
-    context.lineWidth = 1
-    context.globalCompositeOperation = 'lighter'
-    for (const l of state.links) {
-      const a = (l.source as SimNode)
-      const b = (l.target as SimNode)
-      if (!a || !b)
-        continue
-      const dx = a.x - b.x
-      const dy = a.y - b.y
-      const d = Math.hypot(dx, dy)
-      const maxDist = Math.min(w, h) * 0.30
-      const alpha = clamp(1 - d / maxDist, 0, 1) * 0.55
-      if (alpha < 0.06)
-        continue
-
-      context.strokeStyle = state.colors.link.replace('0.28', String(alpha))
-      context.beginPath()
-      context.moveTo(a.x, a.y)
-      context.lineTo(b.x, b.y)
-      context.stroke()
+      c.beginPath()
+      c.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+      c.fillStyle = `hsla(${p.hue}, ${sat}%, ${light + 12}%, ${p.opacity * 0.85})`
+      c.fill()
     }
 
-    // nodes
-    for (const n of state.nodes) {
-      const dx = n.x - px
-      const dy = n.y - py
-      const pd = Math.hypot(dx, dy)
-      const hover = pointer.active ? clamp(1 - pd / 260, 0, 1) : 0
-
-      const r = n.r * (1 + hover * 0.55 + pulse * 0.08)
-      const alpha = 0.22 + n.depth * 0.55 + hover * 0.25
-
-      // glow
-      context.fillStyle = `rgba(42, 140, 255, ${clamp(alpha * 0.35, 0, 0.6)})`
-      context.beginPath()
-      context.arc(n.x, n.y, r * 2.6, 0, Math.PI * 2)
-      context.fill()
-
-      // core
-      context.fillStyle = `rgba(42, 140, 255, ${clamp(alpha, 0.18, 0.95)})`
-      context.beginPath()
-      context.arc(n.x, n.y, r, 0, Math.PI * 2)
-      context.fill()
-    }
-
-    context.globalCompositeOperation = 'source-over'
+    c.globalCompositeOperation = 'source-over'
   }
 
   function step() {
-    if (stop)
-      return
-
-    const now = performance.now()
-    const dt = clamp(now - lastT, 8, 48)
-    lastT = now
-
-    // pointer attractor (kept gentle)
-    if (state.pointer.active && sim) {
-      const px = state.pointer.x
-      const py = state.pointer.y
-      const w = state.w
-      const h = state.h
-      sim.force('pointer', () => {
-        for (const n of state.nodes) {
-          const dx = px - n.x
-          const dy = py - n.y
-          const d = Math.max(90, Math.hypot(dx, dy))
-          const strength = (0.11 + n.depth * 0.06) / d
-          n.vx = (n.vx ?? 0) + dx * strength * 0.9
-          n.vy = (n.vy ?? 0) + dy * strength * 0.9
-        }
-      })
-    }
-
-    sim?.tick(1)
-    drawFrame(dt)
+    if (stop) return
+    drawFrame()
     raf = requestAnimationFrame(step)
   }
 
   function onMove(ev: PointerEvent) {
     const rect = canvas.getBoundingClientRect()
-    const x = clamp(ev.clientX - rect.left, 0, rect.width)
-    const y = clamp(ev.clientY - rect.top, 0, rect.height)
-    state.pointer.x = (x / rect.width) * state.w
-    state.pointer.y = (y / rect.height) * state.h
-    state.pointer.active = 1
+    pointer.targetX = clamp(ev.clientX - rect.left, 0, rect.width)
+    pointer.targetY = clamp(ev.clientY - rect.top, 0, rect.height)
+    if (!pointer.active) {
+      pointer.x = pointer.targetX
+      pointer.y = pointer.targetY
+    }
+    pointer.active = true
   }
 
   function onLeave() {
-    state.pointer.active = 0
+    pointer.active = false
   }
 
+  const ro = new ResizeObserver(() => resize())
+  ro.observe(canvas)
+
   window.addEventListener('pointermove', onMove, { passive: true })
-  window.addEventListener('blur', onLeave, { passive: true })
-  document.addEventListener('mouseleave', onLeave, { passive: true })
+  window.addEventListener('blur', onLeave)
+  document.addEventListener('mouseleave', onLeave)
 
   resize()
-  if (!prefersReducedMotion.value) {
-    cancelAnimationFrame(raf)
+
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+  if (reducedMotion) {
+    for (let i = 0; i < 120; i++) drawFrame()
+  } else {
     raf = requestAnimationFrame(step)
   }
 
@@ -284,10 +276,9 @@ onMounted(() => {
     stop = true
     cancelAnimationFrame(raf)
     ro.disconnect()
-    sim?.stop()
-    window.removeEventListener('pointermove', onMove as any)
-    window.removeEventListener('blur', onLeave as any)
-    document.removeEventListener('mouseleave', onLeave as any)
+    window.removeEventListener('pointermove', onMove as EventListener)
+    window.removeEventListener('blur', onLeave)
+    document.removeEventListener('mouseleave', onLeave)
   })
 })
 </script>
