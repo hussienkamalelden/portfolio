@@ -35,22 +35,33 @@
             <div
               v-for="area in expertiseAreas"
               :key="area.title"
-              class="p-4 rounded-2xl bg-white dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800 hover:border-accent-200 dark:hover:border-accent-800 transition-colors"
+              class="expertise-card group relative overflow-hidden p-5 rounded-2xl bg-white dark:bg-gray-800/50 border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+              :class="area.borderClass"
             >
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-xl bg-accent-50 dark:bg-accent-950/40 flex items-center justify-center text-accent-600 dark:text-accent-400">
-                  <Icon :name="area.icon" class="w-5 h-5" />
+              <div
+                class="absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-[0.04] dark:opacity-[0.06] transition-transform duration-500 group-hover:scale-150"
+                :class="area.blobClass"
+              />
+
+              <div class="relative flex items-center gap-3.5 mb-4">
+                <div
+                  class="w-11 h-11 rounded-xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110"
+                  :class="area.iconBgClass"
+                >
+                  <Icon :name="area.icon" class="w-5 h-5" :class="area.iconColorClass" />
                 </div>
                 <div>
                   <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{ area.title }}</h4>
                   <p class="text-xs text-gray-400 dark:text-gray-500">{{ area.subtitle }}</p>
                 </div>
               </div>
-              <div class="flex flex-wrap gap-1.5">
+
+              <div class="relative flex flex-wrap gap-2">
                 <span
                   v-for="tech in area.technologies"
                   :key="tech"
-                  class="badge"
+                  class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium transition-colors"
+                  :class="area.badgeClass"
                 >
                   {{ tech }}
                 </span>
@@ -70,18 +81,33 @@ const expertiseAreas = [
     subtitle: 'Modern, responsive & performant interfaces',
     icon: 'lucide:monitor',
     technologies: ['Vue.js', 'Nuxt', 'React', 'Next.js', 'TypeScript', 'TailwindCSS', 'GSAP'],
+    borderClass: 'border-blue-100 dark:border-blue-900/30 hover:border-blue-300 dark:hover:border-blue-700/50 hover:shadow-blue-100/40 dark:hover:shadow-blue-900/20',
+    iconBgClass: 'bg-blue-50 dark:bg-blue-950/50',
+    iconColorClass: 'text-blue-600 dark:text-blue-400',
+    badgeClass: 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300',
+    blobClass: 'bg-blue-500',
   },
   {
     title: 'Backend Development',
     subtitle: 'Scalable APIs, databases & cloud services',
     icon: 'lucide:server',
     technologies: ['Node.js', 'NestJS', 'Laravel', 'PostgreSQL', 'MongoDB', 'Firebase', 'Docker', 'AWS'],
+    borderClass: 'border-emerald-100 dark:border-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-700/50 hover:shadow-emerald-100/40 dark:hover:shadow-emerald-900/20',
+    iconBgClass: 'bg-emerald-50 dark:bg-emerald-950/50',
+    iconColorClass: 'text-emerald-600 dark:text-emerald-400',
+    badgeClass: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300',
+    blobClass: 'bg-emerald-500',
   },
   {
     title: 'Mobile Development',
     subtitle: 'Cross-platform & native apps',
     icon: 'lucide:smartphone',
     technologies: ['Flutter', 'React Native', 'Kotlin', 'Swift', 'Dart', 'Expo'],
+    borderClass: 'border-violet-100 dark:border-violet-900/30 hover:border-violet-300 dark:hover:border-violet-700/50 hover:shadow-violet-100/40 dark:hover:shadow-violet-900/20',
+    iconBgClass: 'bg-violet-50 dark:bg-violet-950/50',
+    iconColorClass: 'text-violet-600 dark:text-violet-400',
+    badgeClass: 'bg-violet-50 text-violet-700 dark:bg-violet-950/40 dark:text-violet-300',
+    blobClass: 'bg-violet-500',
   },
 ]
 </script>
