@@ -1,4 +1,7 @@
 export default defineNuxtConfig({
+  nitro: {
+    preset: 'netlify',
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/icon'],
@@ -22,4 +25,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-})
+});
