@@ -10,8 +10,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'vercel',
-    compressPublicAssets: true,
+    preset: 'netlify-static',
   },
 
   app: {
