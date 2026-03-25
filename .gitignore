@@ -18,6 +18,10 @@ logs
 .fleet
 .idea
 
+# Deployment artifacts
+.netlify
+.vercel
+
 # Local env files
 .env
 .env.*
