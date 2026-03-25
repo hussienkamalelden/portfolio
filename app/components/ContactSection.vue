@@ -108,8 +108,6 @@
 </template>
 
 <script setup lang="ts">
-import emailjs from '@emailjs/browser'
-
 const EMAILJS_SERVICE_ID = 'service_jyquran'
 const EMAILJS_TEMPLATE_ID = 'template_xtiwsvr'
 const EMAILJS_PUBLIC_KEY = 'LIwbDuQnSUpCDC9tq'
@@ -127,12 +125,18 @@ const sent = ref(false)
 const errorMsg = ref('')
 
 async function handleSubmit() {
+  // `@emailjs/browser` is a browser-only SDK; keep it out of SSR.
+  if (!import.meta.client) return
+
   if (!formRef.value) return
 
   sending.value = true
   errorMsg.value = ''
 
   try {
+    const mod = await import('@emailjs/browser')
+    const emailjs = mod.default
+
     await emailjs.sendForm(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
