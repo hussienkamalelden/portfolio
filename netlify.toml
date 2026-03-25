@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm run build"
+  command = "pnpm run build && (test -d .output/public || (test -d .output/dist && mkdir -p .output/public && cp -r .output/dist/* .output/public/))"
   publish = ".output/public"
 
 [build.environment]
