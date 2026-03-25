@@ -1,6 +1,9 @@
 <template>
   <section id="hero" class="relative min-h-screen flex items-center pt-16">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <ClientOnly>
+        <HeroD3Backdrop />
+      </ClientOnly>
       <div class="absolute top-1/4 -left-32 w-96 h-96 bg-accent-500/5 rounded-full blur-3xl" />
       <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-500/5 rounded-full blur-3xl" />
     </div>
