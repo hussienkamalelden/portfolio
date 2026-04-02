@@ -1,25 +1,20 @@
 <template>
-  <section id="hero" class="relative h-screen flex items-center overflow-hidden">
-    <!-- Video background -->
+  <section id="hero" class="relative h-screen flex items-center overflow-hidden bg-gray-950">
+    <!-- Video background (deferred — not in initial HTML) -->
     <div class="absolute inset-0 z-0">
       <video
+        v-if="showVideo"
         ref="videoEl"
-        class="w-full h-full object-cover"
-        autoplay
+        class="w-full h-full object-cover transition-opacity duration-1000"
+        :class="videoReady ? 'opacity-100' : 'opacity-0'"
         muted
         loop
         playsinline
         preload="auto"
-     
-      >
-        <source
-          src="/media/videos/world.mp4"
-          type="video/mp4"
-        >
-      </video>
-      <!-- Dark overlay -->
+        src="/media/videos/world.mp4"
+        @canplay="onCanPlay"
+      />
       <div class="absolute inset-0 bg-black/75" />
-      <!-- Gradient overlay for depth -->
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
     </div>
 
@@ -60,26 +55,19 @@
 
 <script setup lang="ts">
 const videoEl = ref<HTMLVideoElement | null>(null)
+const showVideo = ref(false)
+const videoReady = ref(false)
+
+function onCanPlay() {
+  videoEl.value?.play().catch(() => {})
+  videoReady.value = true
+}
 
 onMounted(() => {
-  const v = videoEl.value
-  if (!v) return
-
-  v.muted = true
-  v.playsInline = true
-
-  const tryPlay = () => {
-    v.play().catch(() => {})
-  }
-
-  if (v.readyState >= 2) {
-    tryPlay()
-  } else {
-    v.addEventListener('loadeddata', tryPlay, { once: true })
-  }
-
-  document.addEventListener('click', tryPlay, { once: true })
-  document.addEventListener('touchstart', tryPlay, { once: true })
+  // Defer video element creation until after first paint
+  requestAnimationFrame(() => {
+    showVideo.value = true
+  })
 })
 </script>
 
