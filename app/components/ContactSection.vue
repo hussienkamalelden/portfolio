@@ -3,7 +3,11 @@
     <div class="section-container">
       <div class="max-w-2xl mx-auto">
         <div class="text-center reveal">
-          <h2 class="section-heading">Get in Touch</h2>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-accent-50 text-accent-700 dark:bg-accent-950/50 dark:text-accent-400 border border-accent-200/50 dark:border-accent-800/30 mb-6">
+            <Icon name="lucide:mail" class="w-3.5 h-3.5" />
+            Let's Connect
+          </span>
+          <h2 class="section-heading">Get in <span class="gradient-text">Touch</span></h2>
           <p class="section-subheading mx-auto">
             Have a project in mind? We'd love to hear about it. Send us a message and we'll get back to you shortly.
           </p>
@@ -162,9 +166,9 @@ async function handleSubmit() {
 }
 
 const socials = [
-  { name: 'GitHub', url: '#', icon: 'simple-icons:github' },
-  { name: 'Twitter', url: '#', icon: 'simple-icons:x' },
-  { name: 'LinkedIn', url: '#', icon: 'simple-icons:linkedin' },
-  { name: 'Dribbble', url: '#', icon: 'simple-icons:dribbble' },
+  { name: 'Facebook', url: 'https://www.linkedin.com/company/codemorning/', icon: 'simple-icons:facebook' },
+  { name: 'Twitter', url: 'https://www.linkedin.com/company/codemorning/', icon: 'simple-icons:x' },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/company/codemorning/', icon: 'simple-icons:linkedin' },
+  { name: 'WhatsApp', url: 'https://wa.me/201119084411', icon: 'simple-icons:whatsapp' },
 ]
 </script>

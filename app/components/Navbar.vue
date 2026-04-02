@@ -10,7 +10,7 @@
     <div class="section-container">
       <div class="flex items-center justify-between h-16 sm:h-18">
         <a href="#" class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Devora<span class="text-accent-600">.</span>
+          <span class="gradient-text">CodeMorning</span><span class="text-violet-500">.</span>
         </a>
 
         <div class="hidden md:flex items-center gap-1">
@@ -97,7 +97,7 @@ const activeSection = ref('hero')
 
 const navItems = [
   { label: 'Home', href: '#hero' },
-  { label: 'Projects', href: '#projects' },
+  { label: 'Process', href: '#process' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
 ]

@@ -28,27 +28,92 @@
     @apply text-3xl sm:text-4xl font-bold tracking-tight;
   }
 
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-accent-600 to-violet-500;
+  }
+
   .section-subheading {
     @apply text-lg text-gray-500 dark:text-gray-400 mt-3 max-w-2xl;
   }
 
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-xl
-           bg-accent-600 text-white font-medium text-sm
-           hover:bg-accent-700 active:bg-accent-800
-           transition-all duration-200
-           shadow-lg shadow-accent-600/25 hover:shadow-xl hover:shadow-accent-600/30
-           hover:-translate-y-0.5;
+           font-medium text-sm
+           transition-all duration-300 ease-out
+           hover:-translate-y-0.5
+           border;
+    background: rgba(99, 102, 241, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: rgba(99, 102, 241, 0.25);
+    color: var(--color-accent-700);
+  }
+
+  :root.dark .btn-primary {
+    background: rgba(129, 140, 248, 0.08);
+    border-color: rgba(129, 140, 248, 0.2);
+    color: var(--color-accent-300);
+  }
+
+  .btn-primary:hover {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow:
+      0 0 15px rgba(99, 102, 241, 0.15),
+      0 0 30px rgba(139, 92, 246, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  :root.dark .btn-primary:hover {
+    background: rgba(129, 140, 248, 0.14);
+    border-color: rgba(129, 140, 248, 0.4);
+    box-shadow:
+      0 0 20px rgba(129, 140, 248, 0.2),
+      0 0 40px rgba(139, 92, 246, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.97);
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-xl
-           bg-gray-100 text-gray-800 font-medium text-sm
-           hover:bg-gray-200 active:bg-gray-300
-           dark:bg-gray-800 dark:text-gray-200
-           dark:hover:bg-gray-700 dark:active:bg-gray-600
-           transition-all duration-200
-           hover:-translate-y-0.5;
+           font-medium text-sm
+           transition-all duration-300 ease-out
+           hover:-translate-y-0.5
+           border;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: rgba(200, 200, 220, 0.35);
+    color: var(--color-gray-700);
+  }
+
+  :root.dark .btn-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-gray-300);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow:
+      0 0 12px rgba(99, 102, 241, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  :root.dark .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(129, 140, 248, 0.2);
+    box-shadow:
+      0 0 15px rgba(129, 140, 248, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(0) scale(0.97);
   }
 
   .badge {

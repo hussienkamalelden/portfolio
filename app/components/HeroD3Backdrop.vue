@@ -104,7 +104,9 @@ onMounted(() => {
   const COLOR_RANGES: { h: number, s: number, l: number }[] = [
     { h: 210, s: 95, l: 62 },
     { h: 195, s: 90, l: 58 },
-    { h: 230, s: 80, l: 65 },
+    { h: 260, s: 78, l: 64 },
+    { h: 275, s: 72, l: 60 },
+    { h: 240, s: 80, l: 65 },
     { h: 180, s: 85, l: 55 },
   ]
 

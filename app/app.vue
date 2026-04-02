@@ -12,9 +12,9 @@ onMounted(() => {
 })
 
 useHead({
-  title: 'Devora — We Build Modern Digital Experiences',
+  title: 'CodeMorning — We Build Modern Digital Experiences',
   meta: [
-    { name: 'description', content: 'Devora is a software company that crafts premium websites and mobile applications.' },
+    { name: 'description', content: 'CodeMorning is a software company that crafts premium websites and mobile applications.' },
   ],
   htmlAttrs: { lang: 'en' },
   link: [

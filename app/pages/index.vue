@@ -1,7 +1,8 @@
 <template>
   <div>
     <HeroSection />
-    <ProjectsSection />
+    <ProcessSection />
+    <ServicesSection />
     <AboutSection />
     <ContactSection />
   </div>

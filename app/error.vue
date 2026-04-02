@@ -45,6 +45,6 @@ function handleError() {
 }
 
 useHead({
-  title: computed(() => `${props.error?.statusCode || 'Error'} — Devora`),
+  title: computed(() => `${props.error?.statusCode || 'Error'} — CodeMorning`),
 })
 </script>

@@ -2,7 +2,7 @@
   <section id="projects" class="py-24 sm:py-32">
     <div class="section-container">
       <div class="text-center reveal">
-        <h2 class="section-heading">Our Work</h2>
+        <h2 class="section-heading">Our <span class="gradient-text">Work</span></h2>
         <p class="section-subheading mx-auto">
           A curated selection of projects we've crafted for clients across industries.
         </p>

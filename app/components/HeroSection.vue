@@ -22,18 +22,18 @@
 
             <h1 class="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] animate-fade-in-up" style="animation-delay: 0.1s">
               We build modern
-              <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-600 to-accent-500">
+              <span class="gradient-text">
                 digital experiences
               </span>
             </h1>
 
             <p class="mt-6 text-lg sm:text-xl text-gray-500 dark:text-gray-400 max-w-xl leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s">
-              Devora crafts premium websites and mobile applications that help businesses grow, engage users, and stand out.
+              CodeMorning crafts premium websites and mobile applications that help businesses grow, engage users, and stand out.
             </p>
 
             <div class="mt-10 flex flex-wrap gap-4 animate-fade-in-up" style="animation-delay: 0.3s">
-              <a href="#projects" class="btn-primary">
-                View Our Work
+              <a href="#services" class="btn-primary">
+                Explore Services
                 <Icon name="lucide:arrow-up-right" class="w-4 h-4 ml-2" />
               </a>
               <a href="#contact" class="btn-secondary">
@@ -41,22 +41,7 @@
               </a>
             </div>
 
-            <div class="mt-16 flex items-center gap-8 text-sm text-gray-400 dark:text-gray-500 animate-fade-in-up" style="animation-delay: 0.4s">
-              <div class="flex flex-col">
-                <span class="text-2xl font-bold text-gray-900 dark:text-white">50+</span>
-                Projects delivered
-              </div>
-              <div class="w-px h-10 bg-gray-200 dark:bg-gray-800" />
-              <div class="flex flex-col">
-                <span class="text-2xl font-bold text-gray-900 dark:text-white">30+</span>
-                Happy clients
-              </div>
-              <div class="w-px h-10 bg-gray-200 dark:bg-gray-800" />
-              <div class="flex flex-col">
-                <span class="text-2xl font-bold text-gray-900 dark:text-white">5+</span>
-                Years of experience
-              </div>
-            </div>
+      
           </div>
         </div>
 
