@@ -4,7 +4,7 @@
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
       scrolled
         ? 'bg-gray-950/80 backdrop-blur-xl shadow-sm shadow-gray-800/50'
-        : 'bg-transparent',
+        : 'bg-gray-950/60 backdrop-blur-md md:bg-transparent md:backdrop-blur-none',
     ]"
   >
     <div class="section-container">
