@@ -108,9 +108,9 @@
 </template>
 
 <script setup lang="ts">
-const EMAILJS_SERVICE_ID = 'service_jyquran'
-const EMAILJS_TEMPLATE_ID = 'template_xtiwsvr'
-const EMAILJS_PUBLIC_KEY = 'LIwbDuQnSUpCDC9tq'
+const EMAILJS_SERVICE_ID = 'service_coq0tnf'
+const EMAILJS_TEMPLATE_ID = 'template_jru0krp'
+const EMAILJS_PUBLIC_KEY = 'xHxoTSp5tRk0Dc-mV'
 
 const formRef = ref<HTMLFormElement | null>(null)
 
