@@ -14,13 +14,13 @@
         <h2 class="section-heading">About <span class="gradient-text">Us</span></h2>
 
         <p class="mt-6 text-gray-500 dark:text-gray-400 leading-relaxed text-lg">
-          CodeMorning is a software company built on one belief: technology should solve real problems. We design, develop, and secure digital products across web, mobile, and desktop — delivering solutions that are fast, reliable, and ready for growth.
+          CodeMorning is a software company built on one belief: technology should solve real problems. We design, develop, and secure digital products across web, mobile, and desktop. Delivering solutions that are fast, reliable, and ready for growth.
         </p>
         <p class="mt-4 text-gray-500 dark:text-gray-400 leading-relaxed">
           Our team brings together deep engineering expertise with a sharp eye for design. Whether it's a high-traffic platform, a customer-facing mobile app, or a mission-critical system, we approach every project with the same commitment to quality and long-term impact.
         </p>
         <p class="mt-4 text-gray-500 dark:text-gray-400 leading-relaxed">
-          We don't just write code — we help businesses think through the right architecture, the right tools, and the right strategy to move faster and compete smarter.
+          We don't just write code. We help businesses think through the right architecture, the right tools, and the right strategy to move faster and compete smarter.
         </p>
       </div>
 

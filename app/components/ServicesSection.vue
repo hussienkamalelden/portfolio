@@ -80,11 +80,6 @@
               </span>
             </div>
 
-            <!-- Hover arrow -->
-            <div class="relative mt-4 flex items-center gap-1.5 text-xs font-medium opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500" :class="service.iconColorClass">
-              Learn more
-              <Icon name="lucide:arrow-right" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
           </div>
         </div>
       </div>
