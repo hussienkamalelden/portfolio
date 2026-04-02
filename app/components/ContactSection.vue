@@ -3,7 +3,7 @@
     <div class="section-container">
       <div class="max-w-2xl mx-auto">
         <div class="text-center reveal">
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-accent-50 text-accent-700 dark:bg-accent-950/50 dark:text-accent-400 border border-accent-200/50 dark:border-accent-800/30 mb-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-accent-950/50 text-accent-400 border border-accent-800/30 mb-6">
             <Icon name="lucide:mail" class="w-3.5 h-3.5" />
             Let's Connect
           </span>
@@ -16,7 +16,7 @@
         <form ref="formRef" class="mt-12 space-y-5 reveal" @submit.prevent="handleSubmit">
           <div class="grid sm:grid-cols-2 gap-5">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Name</label>
+              <label for="name" class="block text-sm font-medium text-gray-300 mb-1.5">Name</label>
               <input
                 id="name"
                 v-model="form.name"
@@ -24,11 +24,11 @@
                 type="text"
                 required
                 placeholder="Your name"
-                class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm"
+                class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm"
               >
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+              <label for="email" class="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
               <input
                 id="email"
                 v-model="form.email"
@@ -36,13 +36,13 @@
                 type="email"
                 required
                 placeholder="you@example.com"
-                class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm"
+                class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm"
               >
             </div>
           </div>
 
           <div>
-            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Message</label>
+            <label for="message" class="block text-sm font-medium text-gray-300 mb-1.5">Message</label>
             <textarea
               id="message"
               v-model="form.message"
@@ -50,7 +50,7 @@
               rows="5"
               required
               placeholder="Tell us about your project..."
-              class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm resize-none"
+              class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm resize-none"
             />
           </div>
 
@@ -62,7 +62,7 @@
             leave-from-class="opacity-100"
             leave-to-class="opacity-0"
           >
-            <p v-if="errorMsg" class="text-sm text-red-500 dark:text-red-400">
+            <p v-if="errorMsg" class="text-sm text-red-400">
               {{ errorMsg }}
             </p>
           </Transition>
@@ -91,7 +91,7 @@
         </form>
 
         <div class="mt-16 text-center reveal">
-          <p class="text-sm text-gray-400 dark:text-gray-500 mb-5">Or find us on</p>
+          <p class="text-sm text-gray-500 mb-5">Or find us on</p>
           <div class="flex justify-center gap-4">
             <a
               v-for="social in socials"
@@ -100,7 +100,7 @@
               target="_blank"
               rel="noopener noreferrer"
               :aria-label="social.name"
-              class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-accent-600 dark:hover:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-950/30 transition-all hover:-translate-y-0.5"
+              class="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center text-gray-400 hover:text-accent-400 hover:bg-accent-950/30 transition-all hover:-translate-y-0.5"
             >
               <Icon :name="social.icon" class="w-[18px] h-[18px]" />
             </a>
@@ -129,7 +129,6 @@ const sent = ref(false)
 const errorMsg = ref('')
 
 async function handleSubmit() {
-  // `@emailjs/browser` is a browser-only SDK; keep it out of SSR.
   if (!import.meta.client) return
 
   if (!formRef.value) return

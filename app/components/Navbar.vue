@@ -3,13 +3,13 @@
     :class="[
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
       scrolled
-        ? 'bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl shadow-sm shadow-gray-200/50 dark:shadow-gray-800/50'
+        ? 'bg-gray-950/80 backdrop-blur-xl shadow-sm shadow-gray-800/50'
         : 'bg-transparent',
     ]"
   >
     <div class="section-container">
       <div class="flex items-center justify-between h-16 sm:h-18">
-        <a href="#" class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <a href="#" class="text-xl font-bold tracking-tight text-white">
           <span class="gradient-text">CodeMorning</span><span class="text-violet-500">.</span>
         </a>
 
@@ -21,8 +21,8 @@
             :class="[
               'relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300',
               activeSection === item.href.slice(1)
-                ? 'text-accent-600 dark:text-accent-400'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/60 dark:hover:bg-gray-800/40',
+                ? 'text-accent-400'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800/40',
             ]"
           >
             {{ item.label }}
@@ -37,16 +37,7 @@
 
         <div class="flex items-center gap-3">
           <button
-            aria-label="Toggle dark mode"
-            class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 transition-all"
-            @click="toggle"
-          >
-            <Icon v-if="isDark" name="lucide:sun" class="w-5 h-5" />
-            <Icon v-else name="lucide:moon" class="w-5 h-5" />
-          </button>
-
-          <button
-            class="md:hidden p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 transition-all"
+            class="md:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all"
             aria-label="Toggle menu"
             @click="menuOpen = !menuOpen"
           >
@@ -66,7 +57,7 @@
       >
         <div
           v-if="menuOpen"
-          class="md:hidden pb-4 border-t border-gray-100 dark:border-gray-800 mt-1"
+          class="md:hidden pb-4 border-t border-gray-800 mt-1"
         >
           <a
             v-for="item in navItems"
@@ -75,8 +66,8 @@
             :class="[
               'block py-3 text-sm font-medium transition-colors',
               activeSection === item.href.slice(1)
-                ? 'text-accent-600 dark:text-accent-400'
-                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white',
+                ? 'text-accent-400'
+                : 'text-gray-400 hover:text-white',
             ]"
             @click="menuOpen = false"
           >
@@ -89,8 +80,6 @@
 </template>
 
 <script setup lang="ts">
-const { isDark, toggle } = useDarkMode()
-
 const menuOpen = ref(false)
 const scrolled = ref(false)
 const activeSection = ref('hero')
