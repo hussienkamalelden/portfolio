@@ -98,6 +98,7 @@ const activeSection = ref('hero')
 const navItems = [
   { label: 'Home', href: '#hero' },
   { label: 'Process', href: '#process' },
+  { label: 'Services', href: '#services' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
 ]

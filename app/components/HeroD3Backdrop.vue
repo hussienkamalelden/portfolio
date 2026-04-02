@@ -3,6 +3,7 @@
     <canvas
       ref="canvasEl"
       class="w-full h-full"
+      style="will-change: transform"
       aria-hidden="true"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/80 dark:from-gray-950/30 dark:via-transparent dark:to-gray-950/80" />
@@ -130,7 +131,7 @@ onMounted(() => {
   }
 
   function initParticles() {
-    const count = clamp(Math.round((w * h) / 14000), 60, 220)
+    const count = clamp(Math.round((w * h) / 20000), 40, 140)
     let s = 1337
     const rand = () => {
       s = (s * 16807 + 0) % 2147483647
