@@ -105,18 +105,23 @@ onMounted(() => {
   justify-content: center;
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(139, 92, 246, 0.35));
+  border: 1px solid rgba(129, 140, 248, 0.5);
   transition: all 0.3s ease-out;
+  box-shadow:
+    0 0 18px rgba(99, 102, 241, 0.12),
+    0 0 36px rgba(139, 92, 246, 0.06);
 }
 
 .hero-btn-secondary:hover {
-  color: white;
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.55), rgba(139, 92, 246, 0.45));
+  border-color: rgba(129, 140, 248, 0.65);
+  box-shadow:
+    0 0 25px rgba(99, 102, 241, 0.22),
+    0 0 50px rgba(139, 92, 246, 0.12);
   transform: translateY(-2px);
 }
 

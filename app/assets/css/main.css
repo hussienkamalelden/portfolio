@@ -40,20 +40,23 @@
            transition-all duration-300 ease-out
            hover:-translate-y-0.5
            border;
-    background: rgba(129, 140, 248, 0.08);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.3));
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-color: rgba(129, 140, 248, 0.2);
-    color: var(--color-accent-300);
+    border-color: rgba(129, 140, 248, 0.45);
+    color: white;
+    box-shadow:
+      0 0 18px rgba(99, 102, 241, 0.12),
+      0 0 36px rgba(139, 92, 246, 0.06);
   }
 
   .btn-primary:hover {
-    background: rgba(129, 140, 248, 0.14);
-    border-color: rgba(129, 140, 248, 0.4);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.55), rgba(139, 92, 246, 0.4));
+    border-color: rgba(129, 140, 248, 0.6);
     box-shadow:
-      0 0 20px rgba(129, 140, 248, 0.2),
-      0 0 40px rgba(139, 92, 246, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      0 0 25px rgba(99, 102, 241, 0.25),
+      0 0 50px rgba(139, 92, 246, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .btn-primary:active {

@@ -1,6 +1,12 @@
 <template>
-  <section id="contact" class="py-24 sm:py-32">
-    <div class="section-container">
+  <section id="contact" class="relative py-24 sm:py-32 overflow-hidden">
+    <!-- Background glow -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-500/[0.06] rounded-full blur-3xl" />
+      <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-500/[0.05] rounded-full blur-3xl" />
+    </div>
+
+    <div class="section-container relative z-10">
       <div class="max-w-2xl mx-auto">
         <div class="text-center reveal">
           <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-accent-950/50 text-accent-400 border border-accent-800/30 mb-6">
@@ -13,82 +19,86 @@
           </p>
         </div>
 
-        <form ref="formRef" class="mt-12 space-y-5 reveal" @submit.prevent="handleSubmit">
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="name" class="block text-sm font-medium text-gray-300 mb-1.5">Name</label>
-              <input
-                id="name"
-                v-model="form.name"
-                name="from_name"
-                type="text"
-                required
-                placeholder="Your name"
-                class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm"
-              >
+        <!-- Form card with glass effect -->
+        <div class="mt-12 rounded-3xl bg-gray-900/60 backdrop-blur-xl border border-gray-800/80 p-6 sm:p-8 shadow-2xl shadow-black/20 reveal">
+          <form ref="formRef" class="space-y-5" @submit.prevent="handleSubmit">
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-300 mb-1.5">Name</label>
+                <input
+                  id="name"
+                  v-model="form.name"
+                  name="from_name"
+                  type="text"
+                  required
+                  placeholder="Your name"
+                  class="w-full px-4 py-3 rounded-xl bg-gray-800/60 border border-gray-700/60 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40 focus:border-accent-500/60 transition-all text-sm"
+                >
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+                <input
+                  id="email"
+                  v-model="form.email"
+                  name="from_email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  class="w-full px-4 py-3 rounded-xl bg-gray-800/60 border border-gray-700/60 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40 focus:border-accent-500/60 transition-all text-sm"
+                >
+              </div>
             </div>
+
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
-              <input
-                id="email"
-                v-model="form.email"
-                name="from_email"
-                type="email"
+              <label for="message" class="block text-sm font-medium text-gray-300 mb-1.5">Message</label>
+              <textarea
+                id="message"
+                v-model="form.message"
+                name="message"
+                rows="5"
                 required
-                placeholder="you@example.com"
-                class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm"
-              >
+                placeholder="Tell us about your project..."
+                class="w-full px-4 py-3 rounded-xl bg-gray-800/60 border border-gray-700/60 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40 focus:border-accent-500/60 transition-all text-sm resize-none"
+              />
             </div>
-          </div>
 
-          <div>
-            <label for="message" class="block text-sm font-medium text-gray-300 mb-1.5">Message</label>
-            <textarea
-              id="message"
-              v-model="form.message"
-              name="message"
-              rows="5"
-              required
-              placeholder="Tell us about your project..."
-              class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition-all text-sm resize-none"
-            />
-          </div>
+            <Transition
+              enter-active-class="transition-all duration-300"
+              enter-from-class="opacity-0 -translate-y-1"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition-all duration-200"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <p v-if="errorMsg" class="text-sm text-red-400">
+                {{ errorMsg }}
+              </p>
+            </Transition>
 
-          <Transition
-            enter-active-class="transition-all duration-300"
-            enter-from-class="opacity-0 -translate-y-1"
-            enter-to-class="opacity-100 translate-y-0"
-            leave-active-class="transition-all duration-200"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-          >
-            <p v-if="errorMsg" class="text-sm text-red-400">
-              {{ errorMsg }}
-            </p>
-          </Transition>
-
-          <button
-            type="submit"
-            :disabled="sending || sent"
-            :class="[
-              'w-full btn-primary justify-center',
-              (sending || sent) ? 'opacity-75 cursor-not-allowed' : '',
-            ]"
-          >
-            <template v-if="sending">
-              <Icon name="lucide:loader-2" class="w-4 h-4 mr-2 animate-spin" />
-              Sending...
-            </template>
-            <template v-else-if="sent">
-              Message Sent!
-              <Icon name="lucide:check" class="w-4 h-4 ml-2" />
-            </template>
-            <template v-else>
-              Send Message
-              <Icon name="lucide:send" class="w-4 h-4 ml-2" />
-            </template>
-          </button>
-        </form>
+            <button
+              type="submit"
+              :disabled="sending || sent"
+              class="contact-submit-btn w-full"
+              :class="(sending || sent) ? 'opacity-75 cursor-not-allowed' : ''"
+            >
+              <span class="contact-submit-btn-glow" />
+              <span class="relative z-10 inline-flex items-center justify-center gap-2">
+                <template v-if="sending">
+                  <Icon name="lucide:loader-2" class="w-4 h-4 animate-spin" />
+                  Sending...
+                </template>
+                <template v-else-if="sent">
+                  Message Sent!
+                  <Icon name="lucide:check" class="w-4 h-4" />
+                </template>
+                <template v-else>
+                  Send Message
+                  <Icon name="lucide:send" class="w-4 h-4" />
+                </template>
+              </span>
+            </button>
+          </form>
+        </div>
 
         <div class="mt-16 text-center reveal">
           <p class="text-sm text-gray-500 mb-5">Or find us on</p>
@@ -100,7 +110,7 @@
               target="_blank"
               rel="noopener noreferrer"
               :aria-label="social.name"
-              class="w-10 h-10 rounded-xl bg-gray-800 flex items-center justify-center text-gray-400 hover:text-accent-400 hover:bg-accent-950/30 transition-all hover:-translate-y-0.5"
+              class="w-10 h-10 rounded-xl bg-gray-800/80 border border-gray-700/50 flex items-center justify-center text-gray-400 hover:text-accent-400 hover:bg-accent-950/40 hover:border-accent-800/40 hover:shadow-lg hover:shadow-accent-500/10 transition-all hover:-translate-y-0.5"
             >
               <Icon :name="social.icon" class="w-[18px] h-[18px]" />
             </a>
@@ -171,3 +181,51 @@ const socials = [
   { name: 'WhatsApp', url: 'https://wa.me/201119084411', icon: 'simple-icons:whatsapp' },
 ]
 </script>
+
+<style scoped>
+.contact-submit-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: white;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  transition: all 0.3s ease-out;
+  overflow: hidden;
+  box-shadow:
+    0 0 20px rgba(99, 102, 241, 0.15),
+    0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+.contact-submit-btn-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.contact-submit-btn:hover .contact-submit-btn-glow {
+  opacity: 1;
+}
+
+.contact-submit-btn:hover {
+  border-color: rgba(129, 140, 248, 0.55);
+  box-shadow:
+    0 0 30px rgba(99, 102, 241, 0.25),
+    0 0 60px rgba(139, 92, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.contact-submit-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+</style>
