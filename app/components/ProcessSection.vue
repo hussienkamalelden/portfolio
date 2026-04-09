@@ -2,7 +2,7 @@
   <section id="process" class="relative py-24 sm:py-32 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent-400/[0.04] rounded-full blur-3xl" />
-      <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-violet-400/[0.04] rounded-full blur-3xl" />
+      <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-400/[0.04] rounded-full blur-3xl" />
     </div>
 
     <div class="section-container relative z-10">

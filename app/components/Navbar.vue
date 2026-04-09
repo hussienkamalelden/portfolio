@@ -9,8 +9,11 @@
   >
     <div class="section-container">
       <div class="flex items-center justify-between h-16 sm:h-18">
-        <a href="#" class="text-xl font-bold tracking-tight text-white">
-          <span class="gradient-text">CodeMorning</span><span class="text-violet-500">.</span>
+        <a href="#" class="flex items-center gap-2">
+          <img src="/assets/images/logo.png" alt="CodeMorning" class="h-9 w-9 rounded-lg" />
+          <span class="text-xl font-bold tracking-tight text-white">
+            <span class="gradient-text">Code</span><span class="text-accent-400">Morning</span>
+          </span>
         </a>
 
         <div class="hidden md:flex items-center gap-1">

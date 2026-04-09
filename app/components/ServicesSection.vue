@@ -3,8 +3,8 @@
     <!-- Background decorations -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-accent-400/[0.04] rounded-full blur-3xl" />
-      <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-400/[0.04] rounded-full blur-3xl" />
-      <div class="absolute top-1/2 left-0 w-[400px] h-[400px] bg-violet-400/[0.04] rounded-full blur-3xl" />
+      <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-emerald-400/[0.04] rounded-full blur-3xl" />
+      <div class="absolute top-1/2 left-0 w-[400px] h-[400px] bg-emerald-400/[0.04] rounded-full blur-3xl" />
     </div>
 
     <div class="section-container relative z-10">

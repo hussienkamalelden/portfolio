@@ -31,7 +31,7 @@
           :key="item.label"
           class="group flex flex-col items-center gap-2 p-5 rounded-2xl bg-gray-900 border border-gray-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/30"
         >
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-violet-500 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-500 to-emerald-400 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
             <Icon :name="item.icon" class="w-5 h-5 text-white" />
           </div>
           <span class="text-xs font-semibold text-gray-300 text-center">{{ item.label }}</span>

@@ -30,7 +30,7 @@
 
         <h1 class="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-white animate-fade-in-up" style="animation-delay: 0.1s">
           We build modern
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-violet-400">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-emerald-300">
             digital experiences
           </span>
         </h1>
@@ -64,7 +64,6 @@ function onCanPlay() {
 }
 
 onMounted(() => {
-  // Defer video element creation until after first paint
   requestAnimationFrame(() => {
     showVideo.value = true
   })
@@ -91,7 +90,7 @@ onMounted(() => {
 .hero-btn-primary:hover {
   background: rgba(255, 255, 255, 0.18);
   border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.2), 0 0 40px rgba(139, 92, 246, 0.08);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.2), 0 0 40px rgba(34, 197, 94, 0.08);
   transform: translateY(-2px);
 }
 
@@ -108,20 +107,20 @@ onMounted(() => {
   font-weight: 600;
   font-size: 0.875rem;
   color: white;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.45), rgba(139, 92, 246, 0.35));
-  border: 1px solid rgba(129, 140, 248, 0.5);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.4), rgba(16, 163, 74, 0.3));
+  border: 1px solid rgba(74, 222, 128, 0.45);
   transition: all 0.3s ease-out;
   box-shadow:
-    0 0 18px rgba(99, 102, 241, 0.12),
-    0 0 36px rgba(139, 92, 246, 0.06);
+    0 0 18px rgba(34, 197, 94, 0.12),
+    0 0 36px rgba(16, 163, 74, 0.06);
 }
 
 .hero-btn-secondary:hover {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.55), rgba(139, 92, 246, 0.45));
-  border-color: rgba(129, 140, 248, 0.65);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.55), rgba(16, 163, 74, 0.42));
+  border-color: rgba(74, 222, 128, 0.6);
   box-shadow:
-    0 0 25px rgba(99, 102, 241, 0.22),
-    0 0 50px rgba(139, 92, 246, 0.12);
+    0 0 25px rgba(34, 197, 94, 0.22),
+    0 0 50px rgba(16, 163, 74, 0.12);
   transform: translateY(-2px);
 }
 

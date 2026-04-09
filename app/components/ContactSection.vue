@@ -3,7 +3,7 @@
     <!-- Background glow -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-500/[0.06] rounded-full blur-3xl" />
-      <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-500/[0.05] rounded-full blur-3xl" />
+      <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-emerald-500/[0.05] rounded-full blur-3xl" />
     </div>
 
     <div class="section-container relative z-10">
@@ -193,21 +193,21 @@ const socials = [
   font-weight: 600;
   font-size: 0.9375rem;
   color: white;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(16, 163, 74, 0.22));
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(129, 140, 248, 0.35);
+  border: 1px solid rgba(74, 222, 128, 0.4);
   transition: all 0.3s ease-out;
   overflow: hidden;
   box-shadow:
-    0 0 20px rgba(99, 102, 241, 0.15),
-    0 0 40px rgba(139, 92, 246, 0.08);
+    0 0 20px rgba(34, 197, 94, 0.15),
+    0 0 40px rgba(16, 163, 74, 0.08);
 }
 
 .contact-submit-btn-glow {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(16, 163, 74, 0.08));
   opacity: 0;
   transition: opacity 0.3s ease-out;
 }
@@ -217,10 +217,10 @@ const socials = [
 }
 
 .contact-submit-btn:hover {
-  border-color: rgba(129, 140, 248, 0.55);
+  border-color: rgba(74, 222, 128, 0.55);
   box-shadow:
-    0 0 30px rgba(99, 102, 241, 0.25),
-    0 0 60px rgba(139, 92, 246, 0.15),
+    0 0 30px rgba(34, 197, 94, 0.25),
+    0 0 60px rgba(16, 163, 74, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transform: translateY(-2px);
 }
