@@ -1,49 +1,36 @@
 <template>
   <!-- Loading Screen -->
   <Transition
-    leave-active-class="loader-leave-active"
-    leave-to-class="loader-leave-to"
+    leave-active-class="loader-exit"
+    leave-to-class="loader-exit-to"
   >
-    <div v-if="loading" class="loader-screen">
-      <!-- Animated background grid -->
-      <div class="loader-grid" />
+    <div v-if="loading" class="loader">
+      <!-- Radial pulse rings -->
+      <div class="loader-pulses">
+        <div class="loader-pulse" style="--i:0" />
+        <div class="loader-pulse" style="--i:1" />
+        <div class="loader-pulse" style="--i:2" />
+      </div>
 
-      <!-- Floating orbs -->
-      <div class="loader-orb loader-orb-1" />
-      <div class="loader-orb loader-orb-2" />
-      <div class="loader-orb loader-orb-3" />
-
-      <!-- Center content -->
-      <div class="loader-content">
-        <!-- Logo with glow ring -->
-        <div class="loader-logo-wrap">
-          <div class="loader-ring" />
-          <div class="loader-ring-pulse" />
-          <img
-            src="/assets/images/logo.png"
-            alt="CodeMorning"
-            class="loader-logo"
-          >
+      <!-- Center stack -->
+      <div class="loader-center">
+        <!-- Logo container -->
+        <div class="loader-logo-box">
+          <img src="/assets/images/logo.png" alt="" class="loader-img" />
         </div>
 
-        <!-- Brand text -->
-        <div class="loader-brand">
-          <span class="loader-brand-code">Code</span><span class="loader-brand-morning">Morning</span>
+        <!-- Text -->
+        <h1 class="loader-title">
+          <span class="loader-char loader-char-white" v-for="(ch, i) in codeChars" :key="'c'+i" :style="`--d:${0.6 + i * 0.05}s`">{{ ch }}</span>
+          <span class="loader-char loader-char-green" v-for="(ch, i) in morningChars" :key="'m'+i" :style="`--d:${0.6 + codeChars.length * 0.05 + i * 0.05}s`">{{ ch }}</span>
+        </h1>
+
+        <!-- Dots loader -->
+        <div class="loader-dots">
+          <span class="loader-dot" style="--d:0s" />
+          <span class="loader-dot" style="--d:0.15s" />
+          <span class="loader-dot" style="--d:0.3s" />
         </div>
-
-        <!-- Tagline -->
-        <p class="loader-tagline">Building modern digital experiences</p>
-
-        <!-- Progress bar -->
-        <div class="loader-progress-track">
-          <div class="loader-progress-bar" />
-          <div class="loader-progress-glow" />
-        </div>
-
-        <!-- Code snippets floating -->
-        <div class="loader-code loader-code-1">&lt;code/&gt;</div>
-        <div class="loader-code loader-code-2">{ }</div>
-        <div class="loader-code loader-code-3">./run</div>
       </div>
     </div>
   </Transition>
@@ -55,9 +42,11 @@
 
 <script setup lang="ts">
 const loading = ref(true)
+const codeChars = 'Code'.split('')
+const morningChars = 'Morning'.split('')
 
 useHead({
-  title: 'CodeMorning — We Build Modern Digital Experiences',
+  title: 'CodeMorning',
   meta: [
     { name: 'description', content: 'CodeMorning is a software company that crafts premium websites and mobile applications.' },
   ],
@@ -65,27 +54,22 @@ useHead({
 })
 
 onMounted(() => {
-  const minDisplay = 2800
+  const minTime = 2600
   const start = Date.now()
 
-  const dismiss = () => {
-    const elapsed = Date.now() - start
-    const remaining = Math.max(0, minDisplay - elapsed)
-    setTimeout(() => {
-      loading.value = false
-    }, remaining)
+  const hide = () => {
+    const wait = Math.max(0, minTime - (Date.now() - start))
+    setTimeout(() => { loading.value = false }, wait)
   }
 
-  if (document.readyState === 'complete') {
-    dismiss()
-  } else {
-    window.addEventListener('load', dismiss, { once: true })
-  }
+  if (document.readyState === 'complete') hide()
+  else window.addEventListener('load', hide, { once: true })
 })
 </script>
 
 <style>
-.loader-screen {
+/* ── Loader shell ── */
+.loader {
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -93,253 +77,176 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   background: #030712;
-  overflow: hidden;
+  will-change: opacity, transform;
 }
 
-/* Animated grid background */
-.loader-grid {
+/* ── Radial pulses ── */
+.loader-pulses {
   position: absolute;
-  inset: -50%;
-  background-image:
-    linear-gradient(rgba(74, 222, 128, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74, 222, 128, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridMove 20s linear infinite;
-}
-
-@keyframes gridMove {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  100% { transform: translate(60px, 60px) rotate(1deg); }
-}
-
-/* Floating orbs */
-.loader-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: orbFloat 6s ease-in-out infinite;
-}
-
-.loader-orb-1 {
-  width: 400px;
-  height: 400px;
-  background: rgba(34, 197, 94, 0.08);
-  top: -10%;
-  right: -5%;
-  animation-delay: 0s;
-}
-
-.loader-orb-2 {
-  width: 300px;
-  height: 300px;
-  background: rgba(16, 185, 129, 0.06);
-  bottom: -10%;
-  left: -5%;
-  animation-delay: -2s;
-}
-
-.loader-orb-3 {
-  width: 200px;
-  height: 200px;
-  background: rgba(74, 222, 128, 0.05);
-  top: 50%;
-  left: 50%;
-  animation-delay: -4s;
-}
-
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -20px) scale(1.05); }
-  66% { transform: translate(-20px, 15px) scale(0.95); }
-}
-
-/* Center content */
-.loader-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  z-index: 10;
-}
-
-/* Logo wrapper with rings */
-.loader-logo-wrap {
-  position: relative;
-  width: 120px;
-  height: 120px;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: logoEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+.loader-pulse {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 197, 94, 0.08);
+  animation: pulse 3s ease-out infinite;
+  animation-delay: calc(var(--i) * 1s);
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+
+/* ── Center ── */
+.loader-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Logo box ── */
+.loader-logo-box {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: logoIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             logoBounce 2s ease-in-out 1.2s infinite;
   opacity: 0;
 }
 
-@keyframes logoEntry {
-  0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+@keyframes logoIn {
+  0% { opacity: 0; transform: scale(0) rotate(-90deg); }
+  60% { opacity: 1; transform: scale(1.15) rotate(5deg); }
+  80% { transform: scale(0.95) rotate(-2deg); }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-.loader-ring {
+@keyframes logoBounce {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-12px); }
+  50% { transform: translateY(0); }
+  65% { transform: translateY(-5px); }
+  80% { transform: translateY(0); }
+}
+
+/* SVG spinner */
+.loader-spinner {
   position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  border-top-color: rgba(34, 197, 94, 0.6);
-  border-right-color: rgba(74, 222, 128, 0.3);
-  animation: ringRotate 1.5s linear infinite;
+  inset: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
 }
 
-@keyframes ringRotate {
-  to { transform: rotate(360deg); }
+.loader-spinner-track {
+  fill: none;
+  stroke: rgba(34, 197, 94, 0.08);
+  stroke-width: 2;
 }
 
-.loader-ring-pulse {
-  position: absolute;
-  inset: -16px;
-  border-radius: 50%;
-  border: 1px solid rgba(34, 197, 94, 0.15);
-  animation: ringPulse 2s ease-in-out infinite;
+.loader-spinner-fill {
+  fill: none;
+  stroke: url(#lg) #4ade80;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 352;
+  stroke-dashoffset: 260;
+  animation: spinDash 1.4s ease-in-out infinite;
+  transform-origin: center;
 }
 
-@keyframes ringPulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.08); opacity: 1; }
+@keyframes spinDash {
+  0% { transform: rotate(0deg); stroke-dashoffset: 260; }
+  50% { stroke-dashoffset: 60; }
+  100% { transform: rotate(360deg); stroke-dashoffset: 260; }
 }
 
-.loader-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
+.loader-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
   object-fit: cover;
-  box-shadow:
-    0 0 30px rgba(34, 197, 94, 0.2),
-    0 0 60px rgba(34, 197, 94, 0.08);
 }
 
-/* Brand text */
-.loader-brand {
-  margin-top: 28px;
-  font-size: 2rem;
+@keyframes imgGlow {
+  0% { text-shadow: 0 0 10px rgba(34, 197, 94, 0.12); }
+  100% { text-shadow: 0 0 20px rgba(34, 197, 94, .8), 0 0 20px rgba(34, 197, 94, 0.08); }
+}
+
+/* ── Title — per-character stagger ── */
+.loader-title {
+  margin-top: 10px;
+  font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  animation: textFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  display: flex;
+  animation: imgGlow 1s ease-in-out infinite alternate;
+}
+
+.loader-char {
+  display: inline-block;
+  opacity: 0;
+  animation: charIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--d);
+}
+
+.loader-char-white {
+  color: #fff;
+}
+
+.loader-char-green {
+  color: #22c55e;
+}
+
+@keyframes charIn {
+  0% { opacity: 0; transform: translateY(16px) scale(0.7); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+/* ── Dots ── */
+.loader-dots {
+  margin-top: 24px;
+  display: flex;
+  gap: 6px;
+  animation: textFade 0.4s ease-out 1.2s forwards;
   opacity: 0;
 }
 
-@keyframes textFadeUp {
-  0% { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes textFade {
+  to { opacity: 1; }
 }
 
-.loader-brand-code {
-  background: linear-gradient(135deg, #4ade80, #86efac);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.loader-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: dotBounce 1s ease-in-out infinite;
+  animation-delay: var(--d);
 }
 
-.loader-brand-morning {
-  color: #d1d5db;
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+  40% { transform: scale(1.2); opacity: 1; }
 }
 
-/* Tagline */
-.loader-tagline {
-  margin-top: 8px;
-  font-size: 0.875rem;
-  color: #6b7280;
-  letter-spacing: 0.02em;
-  animation: textFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+/* ── Exit ── */
+.loader-exit {
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+
+.loader-exit-to {
   opacity: 0;
-}
-
-/* Progress bar */
-.loader-progress-track {
-  position: relative;
-  margin-top: 32px;
-  width: 200px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 99px;
-  overflow: hidden;
-  animation: textFadeUp 0.5s ease-out 0.7s forwards;
-  opacity: 0;
-}
-
-.loader-progress-bar {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #22c55e, #4ade80);
-  border-radius: 99px;
-  transform-origin: left;
-  animation: progressFill 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
-  transform: scaleX(0);
-}
-
-@keyframes progressFill {
-  0% { transform: scaleX(0); }
-  60% { transform: scaleX(0.7); }
-  100% { transform: scaleX(1); }
-}
-
-.loader-progress-glow {
-  position: absolute;
-  top: -4px;
-  bottom: -4px;
-  left: 0;
-  width: 60px;
-  background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.4), transparent);
-  border-radius: 99px;
-  animation: progressGlow 1.5s ease-in-out infinite;
-}
-
-@keyframes progressGlow {
-  0% { left: -60px; }
-  100% { left: 100%; }
-}
-
-/* Floating code snippets */
-.loader-code {
-  position: absolute;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: rgba(74, 222, 128, 0.15);
-  font-weight: 600;
-  pointer-events: none;
-  animation: codeFloat 4s ease-in-out infinite;
-}
-
-.loader-code-1 {
-  top: -40px;
-  right: -80px;
-  animation-delay: 0s;
-}
-
-.loader-code-2 {
-  bottom: -30px;
-  left: -70px;
-  animation-delay: -1.5s;
-}
-
-.loader-code-3 {
-  top: 30px;
-  left: -90px;
-  animation-delay: -3s;
-}
-
-@keyframes codeFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-  50% { transform: translateY(-10px) rotate(3deg); opacity: 0.6; }
-}
-
-/* Exit transition */
-.loader-leave-active {
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.loader-leave-to {
-  opacity: 0;
-  transform: scale(1.05);
-  filter: blur(8px);
+  transform: scale(1.08);
+  filter: blur(10px);
 }
 </style>
