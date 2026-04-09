@@ -5,7 +5,7 @@
         <div class="flex items-center gap-2">
           <img src="/assets/images/logo.png" alt="CodeMorning" class="h-8 w-8 rounded-lg" />
           <span class="text-lg font-bold text-white">
-            <span class="gradient-text">Code</span><span class="text-accent-400">Morning</span>
+            <span class="white">Code</span><span class="text-accent-400">Morning</span>
           </span>
         </div>
 
