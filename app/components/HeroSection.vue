@@ -11,7 +11,7 @@
         loop
         playsinline
         preload="auto"
-        src="/media/videos/world.mp4"
+        src="/assets/videos/world.mp4"
         @canplay="onCanPlay"
       />
       <div class="absolute inset-0 bg-black/75" />
